@@ -1,6 +1,6 @@
 ---
 title:  20250723.5
-categories: [, ReleaseNotes]
+categories: [ReleaseNotes]
 description: This PR implements the functionality for work item #7379.
 date: 2025-07-23
 ---
