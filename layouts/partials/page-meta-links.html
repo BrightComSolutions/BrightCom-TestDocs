@@ -1,0 +1,52 @@
+{{/*
+    Custom page-meta-links partial to override Docsy's default GitHub issue link behavior
+    This adds support for GitHub issue templates via the github_issue_template parameter
+*/}}
+
+{{ $github_repo := ($.Param "github_repo") }}
+{{ $github_branch := ($.Param "github_branch") | default "main" }}
+{{ $github_subdir := ($.Param "github_subdir") }}
+{{ $github_project_repo := ($.Param "github_project_repo") }}
+{{ $github_issue_template := ($.Param "github_issue_template") }}
+
+{{ $is_blog := eq .Section "blog" }}
+
+{{ if $github_repo }}
+  {{ $pathFormatted := replace .Path "\\" "/" }}
+  {{ $gh_repo_path := $pathFormatted }}
+  {{ if $github_subdir }}
+    {{ $gh_repo_path = printf "%s/%s" $github_subdir $pathFormatted }}
+  {{ end }}
+  
+  <div class="td-page-meta ms-2 pb-1 pt-2 mb-0">
+    {{/* View page source */}}
+    <a href="{{ $github_repo }}/blob/{{ $github_branch }}/{{ $gh_repo_path }}" class="td-page-meta__view" target="_blank" rel="noopener"><i class="fa-solid fa-code fa-fw"></i> View page source</a>
+    
+    {{/* Edit this page */}}
+    <a href="{{ $github_repo }}/edit/{{ $github_branch }}/{{ $gh_repo_path }}" class="td-page-meta__edit" target="_blank" rel="noopener"><i class="fa-solid fa-edit fa-fw"></i> Edit this page</a>
+    
+    {{/* Create child page - only for docs, not blog */}}
+    {{ if not $is_blog }}
+      {{ $new_page_dir := .File.Dir }}
+      {{ if $github_subdir }}
+        {{ $new_page_dir = printf "%s/%s" $github_subdir $new_page_dir }}
+      {{ end }}
+      <a href="{{ $github_repo }}/new/{{ $github_branch }}/{{ $new_page_dir }}?filename=change-me.md&value=---%0Atitle%3A+%22Long+Page+Title%22%0AlinkTitle%3A+%22Short+Nav+Title%22%0Aweight%3A+100%0Adescription%3A+%3E-%0A++++Page+description+for+heading+and+indexes.%0A---%0A%0A%23%23+Heading%0A%0AEdit+this+template+to+create+your+new+page.%0A%0A*+Give+it+a+good+name%2C+unlike+this+one.%0A*+Add+a+brief+description+to+the+%60description%60+front+matter.%0A*+Add+the+page+content%0A*+Change+the+%60weight%60+front+matter+to+move+the+page+up+or+down+in+the+navigation.%0A" class="td-page-meta__child" target="_blank" rel="noopener"><i class="fa-solid fa-plus fa-fw"></i> Create child page</a>
+    {{ end }}
+    
+    {{/* Create documentation issue - with custom template support */}}
+    {{ $issue_title := .Title | urlquery }}
+    {{ $current_page_url := .Permalink | urlquery }}
+    {{ $issue_url := printf "%s/issues/new?title=%s" $github_repo $issue_title }}
+    {{ if $github_issue_template }}
+      {{ $issue_url = printf "%s&template=%s" $issue_url $github_issue_template }}
+      {{ $issue_url = printf "%s&page-url=%s" $issue_url $current_page_url }}
+    {{ end }}
+    <a href="{{ $issue_url }}" class="td-page-meta__issue" target="_blank" rel="noopener"><i class="fa-solid fa-list-check fa-fw"></i> Create documentation issue</a>
+    
+    {{/* Create project issue - only if different project repo is configured */}}
+    {{ if $github_project_repo }}
+      <a href="{{ $github_project_repo }}/issues/new" class="td-page-meta__project-issue" target="_blank" rel="noopener"><i class="fa-solid fa-tools fa-fw"></i> Create project issue</a>
+    {{ end }}
+  </div>
+{{ end }}

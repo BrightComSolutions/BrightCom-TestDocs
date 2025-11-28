@@ -116,6 +116,9 @@ params:
 
   # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
   github_repo: https://github.com/BrightComSolutions/BrightCom-TestDocs
+  
+  # Custom GitHub issue template parameter
+  github_issue_template: documentation-issue.yml
 
   # An optional link to a related project repo. For example, the sibling repository where your product code lives.
   # github_project_repo: https://github.com/google/docsy

@@ -23,27 +23,6 @@ body:
     validations:
       required: true
 
-  - type: dropdown
-    id: product
-    attributes:
-      label: BrightCom Product
-      description: Which product should this content be related to?
-      options:
-        - "BRC Connect"
-        - "BRC Logistics"
-        - "BRC Core"
-        - "BRC Retail"
-        - "BRC Bonus"
-        - "BRC GDPR"
-        - "BRC Drop Shipment"
-        - "BRC Extended IC"
-        - "BRC Pleo"
-        - "Partner Solutions"
-        - "General/Site-wide"
-        - "Multiple products"
-    validations:
-      required: true
-
   - type: textarea
     id: content-description
     attributes:
