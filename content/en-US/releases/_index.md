@@ -1,8 +1,9 @@
 ---
 title: Release Log
 menu: {main: {weight: 30}}
+type: docs
 ---
 
-This is the **blog** section. It has two categories: News and Releases.
+This site area is a complete release history for BrightCom software products.
 
-Files in these directories will be listed in reverse chronological order.
+Locate the specific product release on the left hand side by app and version number.
