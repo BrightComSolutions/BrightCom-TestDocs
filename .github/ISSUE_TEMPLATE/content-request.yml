@@ -1,0 +1,88 @@
+name: ➕ Content Request
+description: Request new documentation or additional content
+title: "[REQUEST] "
+labels: ["enhancement", "content-request"]
+body:
+  - type: dropdown
+    id: content-type
+    attributes:
+      label: Type of Content Requested
+      description: What kind of content would you like to see added?
+      options:
+        - "New setup guide"
+        - "Configuration examples"
+        - "Troubleshooting guide"
+        - "Best practices"
+        - "Tutorial or walkthrough"
+        - "API documentation"
+        - "Integration examples"
+        - "Screenshots or diagrams"
+        - "Video content"
+        - "FAQ section"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: product
+    attributes:
+      label: BrightCom Product
+      description: Which product should this content be related to?
+      options:
+        - "BRC Connect"
+        - "BRC Logistics"
+        - "BRC Core"
+        - "BRC Retail"
+        - "BRC Bonus"
+        - "BRC GDPR"
+        - "BRC Drop Shipment"
+        - "BRC Extended IC"
+        - "BRC Pleo"
+        - "Partner Solutions"
+        - "General/Site-wide"
+        - "Multiple products"
+    validations:
+      required: true
+
+  - type: textarea
+    id: content-description
+    attributes:
+      label: Content Description
+      description: Please describe what content you'd like to see added
+      placeholder: "I would like to see a step-by-step guide for setting up automated data sync between Business Central and..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case or Business Need
+      description: Why is this content needed? What problem would it solve?
+      placeholder: "Our customers frequently ask about this setup, and having clear documentation would help them..."
+
+  - type: textarea
+    id: target-audience
+    attributes:
+      label: Target Audience
+      description: Who would benefit from this content?
+      placeholder: "System administrators, Business Central consultants, end users, etc."
+
+  - type: input
+    id: suggested-location
+    attributes:
+      label: Suggested Location (Optional)
+      description: Where on the site should this content be added?
+      placeholder: "/brc-connect/configuration/ or new section under /tutorials/"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this content to you and your users?
+      options:
+        - "Low - Nice to have"
+        - "Medium - Would be helpful"
+        - "High - Frequently needed"
+        - "Critical - Essential for product use"
+    validations:
+      required: true

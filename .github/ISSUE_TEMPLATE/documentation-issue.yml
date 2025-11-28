@@ -1,0 +1,80 @@
+name: 📖 Documentation Issue
+description: Report an issue with the documentation content
+title: "[DOCS] "
+labels: ["documentation"]
+body:
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Type of Documentation Issue
+      description: What kind of documentation issue are you reporting?
+      options:
+        - "Incorrect information"
+        - "Missing information"
+        - "Outdated content"
+        - "Typo or formatting error"
+        - "Broken link"
+        - "Confusing explanation"
+        - "Missing example or screenshot"
+        - "Other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: product
+    attributes:
+      label: BrightCom Product
+      description: Which product is this documentation issue related to?
+      options:
+        - "BRC Connect"
+        - "BRC Logistics"
+        - "BRC Core"
+        - "BRC Retail"
+        - "BRC Bonus"
+        - "BRC GDPR"
+        - "BRC Drop Shipment"
+        - "BRC Extended IC"
+        - "BRC Pleo"
+        - "Partner Solutions"
+        - "General/Site-wide"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: page-url
+    attributes:
+      label: Page URL
+      description: Please provide the URL of the page with the issue
+      placeholder: "https://testdocs.brightcom.se/brc-connect/setup/"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Description of the Issue
+      description: Please describe what's wrong with the documentation
+      placeholder: "The setup instructions are missing step 3 about configuring the API key..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-fix
+    attributes:
+      label: Suggested Fix (Optional)
+      description: If you have suggestions on how to fix this, please share them
+      placeholder: "Add a section explaining how to obtain the API key from..."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this documentation issue?
+      options:
+        - "Low - Minor improvement"
+        - "Medium - Affects user understanding"
+        - "High - Blocks users from completing tasks"
+        - "Critical - Incorrect information causing problems"
+    validations:
+      required: true
