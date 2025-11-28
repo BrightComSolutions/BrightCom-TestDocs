@@ -1,4 +1,4 @@
-baseURL: https://betadocs.brightcom.se
+baseURL: https://testdocs.brightcom.se
 title: BrightCom Docs
 
 # Language settings
@@ -32,7 +32,7 @@ pygmentsStyle: tango
 
 # Configure how URLs look like per section.
 permalinks:
-  blog: /:section/:year/:month/:day/:slug/
+  releases: /:section/:year/:month/:day/:slug/
 
 # Image processing configuration.
 imaging:
@@ -48,6 +48,7 @@ languages:
     title: BrightCom Docs
     params:
       description: Documentation for BrightCom Products and Solutions
+      github_subdir: "content/en-US"
   # cSpell:disable
   'sv':
     languageName: Svenska
@@ -57,6 +58,7 @@ languages:
       description: Dokumentation för BrightCom produkter och lösningar
       time_format_default: 02.01.2006
       time_format_blog: 02.01.2006
+      github_subdir: "content/sv-SE"
   # cSpell:enable
 
 markup:
@@ -113,13 +115,12 @@ params:
   url_latest_version: https://example.com
 
   # Repository configuration (URLs for in-page links to opening issues and suggesting changes)
-  github_repo: https://github.com/BrightCom-Docs/BRC-Docs
+  github_repo: https://github.com/BrightComSolutions/BrightCom-TestDocs
 
   # An optional link to a related project repo. For example, the sibling repository where your product code lives.
   # github_project_repo: https://github.com/google/docsy
 
-  # Specify a value here if your content directory is not in your repo's root directory
-  # github_subdir: ""
+  # Content subdirectory is now set per language in the languages section above
 
   # Uncomment this if your GitHub repo does not have "main" as the default branch,
   # or specify a new value if you want to reference another branch in your GitHub links
@@ -170,34 +171,22 @@ params:
       enable: false
 
   links:
-    # End user relevant links. These will show up on left side of footer and in the community page if you have one.
+    # End user relevant links. These will show up on left side of footer.
     user:
-      - name: User mailing list
-        url: https://example.org/mail
-        icon: fa fa-envelope
-        desc: Discussion and help from your fellow users
-      - name: Twitter
-        url: https://example.org/twitter
-        icon: fab fa-twitter
-        desc: Follow us on Twitter to get the latest news!
-      - name: Stack Overflow
-        url: https://example.org/stack
-        icon: fab fa-stack-overflow
-        desc: Practical questions and curated answers
-    # Developer relevant links. These will show up on right side of footer and in the community page if you have one.
+      - name: AppSource
+        url: https://appsource.microsoft.com/sv-se/marketplace/apps?search=BrightCom&page=1
+        icon: fab fa-microsoft
+        desc: Find BrightCom apps on Microsoft AppSource
+      - name: Release Notes
+        url: /releases/
+        icon: fas fa-rocket
+        desc: Latest updates and releases for BrightCom apps
+    # Developer relevant links. These will show up on right side of footer.
     developer:
       - name: GitHub
         url: https://github.com/BrightCom-Docs/BRC-Docs
         icon: fab fa-github
-        desc: Development takes place here!
-      - name: Slack
-        url: https://example.org/slack
-        icon: fab fa-slack
-        desc: Chat with other project developers
-      - name: Developer mailing list
-        url: https://example.org/mail
-        icon: fa fa-envelope
-        desc: Discuss development issues around the project
+        desc: Documentation source and issue tracking
 
 module:
   # Uncomment the next line to build and serve using local docsy clone declared in the named Hugo workspace:

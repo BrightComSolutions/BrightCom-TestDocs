@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🛍️ AppSource Support
+    url: https://appsource.microsoft.com/en-us/marketplace/apps?search=BrightCom
+    about: For immediate product support, visit our AppSource listings
+  - name: 📧 Direct Support
+    url: mailto:support@brightcom.se
+    about: For urgent issues or direct communication with our support team
+  - name: 💬 General Questions
+    url: https://github.com/BrightCom-Docs/BrightCom-TestDocs/discussions
+    about: For general questions and community discussions

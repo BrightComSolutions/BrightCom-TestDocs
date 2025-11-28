@@ -1,0 +1,18 @@
+/*
+Custom styles for BrightCom Docs
+*/
+
+/* Fix main content positioning under fixed navbar */
+.td-main {
+    padding-top: 70px;
+}
+
+/* Hide navbar on home page only */
+body.td-home .td-navbar {
+    display: none;
+}
+
+/* Remove top padding on home page since navbar is hidden */
+body.td-home .td-main {
+    padding-top: 0;
+}
