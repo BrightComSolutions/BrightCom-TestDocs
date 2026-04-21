@@ -31,7 +31,9 @@ Monitors and manages job queue entries with automated error handling and notific
 Automates currency rate updates from multiple external sources.
 
 ### Price Book Management
-Manages automated price calculations and updates for your product catalog.
+Automated price calculation and materialization system that pre-calculates prices for bulk export to external systems. Supports two calculation modes: Permutation (individual customer calculation) and Batch (grouped calculation for performance at scale). Features zero-downtime recalculation using generation-based result swaps.
+
+[Read the complete Price Book guide →](price-book.md)
 
 ### GDPR Management
 Handles customer data anonymization and deletion for compliance requirements.
@@ -52,6 +54,10 @@ Common daily tasks and workflows using BRC Core features for routine business op
 
 {{< card header="Advanced Features" >}}
 Power user features and advanced configuration options for experienced users and administrators.
+{{< /card >}}
+
+{{< card header="Price Book" >}}
+Comprehensive guide to automated price calculation, performance optimization, and external system integration.
 {{< /card >}}
 {{< /cardpane >}}
 

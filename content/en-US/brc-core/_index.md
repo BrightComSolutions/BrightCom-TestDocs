@@ -16,7 +16,7 @@ BRC Core is a foundational Microsoft Dynamics 365 Business Central app that prov
 - **Background Monitor**: Automated monitoring and management of job queue entries with error handling and notification capabilities
 - **Currency Exchange Rate Management**: Automated currency rate updates from multiple external sources including ECB, Riksbank, Nationalbanken, and others
 - **Feature Management**: Conditional feature enablement based on user, company, or custom criteria for controlled rollouts
-- **PriceBook Engine**: Automated price calculation and update system for maintaining current pricing
+- **Price Book Engine**: High-performance price calculation and materialization system with zero-downtime updates for external system integration
 - **GDPR Management**: Customer data anonymization and deletion tools for compliance requirements  
 - **Admin Toolbox**: Comprehensive administrative utilities for system diagnostics and management
 - **Business Central Extensions**: Enhanced functionality for inventory valuation, item dimensions, VAT posting, customs documents, and more
