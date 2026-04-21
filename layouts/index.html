@@ -22,11 +22,48 @@
       </button>
     </div>
     <div class="bc-hero-meta">
-      {{ range $hero.meta }}
+      {{- /* Derive "Latest release" + "Updated" from the newest /releases/ page.
+             Falls back to data/home.yaml meta[] when that section is empty. */ -}}
+      {{- $releasesSection := .Site.GetPage "section" "releases" -}}
+      {{- $latest := "" -}}
+      {{- with $releasesSection -}}{{- $latest = index (.Pages.ByDate.Reverse) 0 -}}{{- end -}}
+
+      {{ if $latest }}
+        {{- /* Title is "<Product> <version>" e.g. "BRC Core 27.0.30430.0".
+               Split on the first run of digits so we can accent the product. */ -}}
+        {{- $parts := findRE "^(.+?)\\s+(\\d[\\d\\.]+)$" $latest.Title 1 -}}
+        {{- $product := $latest.Title -}}
+        {{- $version := "" -}}
+        {{- if $parts -}}
+          {{- $m := (findRESubmatch "^(.+?)\\s+(\\d[\\d\\.]+)$" $latest.Title) -}}
+          {{- if $m -}}
+            {{- $product = index (index $m 0) 1 -}}
+            {{- $version = index (index $m 0) 2 -}}
+          {{- end -}}
+        {{- end -}}
         <div class="bc-meta-item">
-          <span class="bc-meta-label">{{ .label }}</span>
-          <span class="bc-meta-val">{{ .value_html | safeHTML }}</span>
+          <span class="bc-meta-label">{{ T "ui_latest_release" | default "Latest release" }}</span>
+          <span class="bc-meta-val"><span class="accent">{{ $product }}</span>{{ with $version }} {{ . }}{{ end }}</span>
         </div>
+        {{ range (where $hero.meta "label" "ne" "Latest release") }}
+          {{ if ne .label "Updated" }}
+            <div class="bc-meta-item">
+              <span class="bc-meta-label">{{ .label }}</span>
+              <span class="bc-meta-val">{{ .value_html | safeHTML }}</span>
+            </div>
+          {{ end }}
+        {{ end }}
+        <div class="bc-meta-item">
+          <span class="bc-meta-label">{{ T "ui_updated" | default "Updated" }}</span>
+          <span class="bc-meta-val">{{ $latest.Date.Format "January 2, 2006" }}</span>
+        </div>
+      {{ else }}
+        {{ range $hero.meta }}
+          <div class="bc-meta-item">
+            <span class="bc-meta-label">{{ .label }}</span>
+            <span class="bc-meta-val">{{ .value_html | safeHTML }}</span>
+          </div>
+        {{ end }}
       {{ end }}
     </div>
   </div>
@@ -100,13 +137,25 @@
   <div class="bc-release-feed">
     {{ if $releasePages }}
       {{ range $releasePages }}
+        {{- /* Title convention is "<Product> <version>" e.g. "BRC Core 27.0.30430.0" */ -}}
+        {{- $fullTitle := .Title -}}
+        {{- $prod := $fullTitle -}}
+        {{- $ver := "" -}}
+        {{- $match := findRE "\\s\\d[\\d\\.]+$" $fullTitle -}}
+        {{- if $match -}}
+          {{- $suffix := index $match 0 -}}
+          {{- $ver = strings.TrimLeft " " $suffix -}}
+          {{- $prod = strings.TrimSuffix $suffix $fullTitle -}}
+        {{- end -}}
+        {{- $rowTitle := .Description -}}
+        {{- if not $rowTitle -}}{{- $rowTitle = $prod -}}{{- end -}}
         <a class="bc-rel-row" href="{{ .RelPermalink }}">
           <div class="bc-rel-date">{{ .Date.Format "Jan 2" }}</div>
           <div>
-            <div class="bc-rel-product">{{ .Params.product | default .Section | humanize }}</div>
-            <div class="bc-rel-ver">{{ .Params.version | default "" }}</div>
+            <div class="bc-rel-product">{{ $prod }}</div>
+            <div class="bc-rel-ver">{{ $ver }}</div>
           </div>
-          <div class="bc-rel-title">{{ .Title }}</div>
+          <div class="bc-rel-title">{{ $rowTitle }}</div>
           <div><span class="bc-pill">{{ .Params.type | default "Release" }}</span></div>
         </a>
       {{ end }}
