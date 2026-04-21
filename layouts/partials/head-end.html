@@ -1,0 +1,29 @@
+{{/*
+  BrightCom Docs — inserted at the end of <head>.
+  - Preconnect + Inter / Inter Tight / JetBrains Mono
+  - Inline theme flash-prevention (read localStorage before paint)
+  - Bundle the project JS (bc-docs.js)
+*/}}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<script>
+  // Theme flash prevention — runs before first paint.
+  (function () {
+    try {
+      var t = localStorage.getItem('bc_theme');
+      if (t === 'dark' || t === 'light') {
+        document.documentElement.setAttribute('data-theme', t);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+</script>
+
+{{ with resources.Get "js/bc-docs.js" }}
+  {{ $js := . | js.Build (dict "minify" true) | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}

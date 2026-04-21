@@ -6,7 +6,7 @@ contentDir: content/en
 defaultContentLanguage: en
 defaultContentLanguageInSubdir: false
 # Useful when translating.
-enableMissingTranslationPlaceholders: true
+enableMissingTranslationPlaceholders: false
 
 enableRobotsTXT: true
 
@@ -78,6 +78,7 @@ markup:
 
 # Comment out if you don't want the "print entire section" link enabled.
 outputs:
+  home: [HTML, RSS, JSON]    # JSON emits offline-search-index.json for ⌘K overlay
   section: [HTML, RSS]
 
 params:
@@ -132,8 +133,8 @@ params:
   # Google Custom Search Engine ID. Remove or comment out to disable search.
   gcs_engine_id: 
 
-  # Enable Lunr.js offline search
-  offlineSearch: false
+  # Enable Lunr.js offline search — powers the ⌘K overlay via offline-search-index.json
+  offlineSearch: true
 
   # Enable syntax highlighting and copy buttons on code blocks with Prism
   prism_syntax_highlighting: false

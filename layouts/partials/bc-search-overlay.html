@@ -1,0 +1,28 @@
+{{/*
+  BrightCom Docs — ⌘K search overlay. Rendered once per page (included
+  by the navbar partial). bc-docs.js owns open/close + querying.
+*/}}
+<div id="bc-search-overlay" class="bc-search-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-label="{{ T "ui_search_docs" | default "Search docs" }}">
+  <div class="bc-search-panel" role="document">
+    <div class="bc-search-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--muted)">
+        <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+      </svg>
+      <input type="search" autocomplete="off" spellcheck="false" placeholder="{{ T "ui_search_placeholder" | default "Search across every product and release…" }}">
+      <span class="bc-esc">ESC</span>
+    </div>
+    <div id="bc-search-results" class="bc-search-results">
+      <div class="bc-search-section-head">{{ T "ui_search_try" | default "Try searching" }}</div>
+      <div style="padding:14px 12px 18px;color:var(--muted);font-size:13px;">
+        {{ T "ui_search_hint" | default "Start typing to find guides, references and release notes." }}
+      </div>
+    </div>
+    <div class="bc-search-footer">
+      <div class="bc-sf-item"><span class="bc-sf-kbd">↑↓</span> {{ T "ui_search_navigate" | default "Navigate" }}</div>
+      <div class="bc-sf-item"><span class="bc-sf-kbd">↵</span> {{ T "ui_search_open" | default "Open" }}</div>
+      <div class="bc-sf-item"><span class="bc-sf-kbd">⌘K</span> {{ T "ui_search_toggle" | default "Toggle" }}</div>
+      <div class="bc-sf-grow"></div>
+      <div class="bc-sf-item"><span class="bc-sf-brand">BrightCom Search</span></div>
+    </div>
+  </div>
+</div>

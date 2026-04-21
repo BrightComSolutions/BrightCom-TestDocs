@@ -1,0 +1,58 @@
+# Home-page copy — hero + "Pick where you are" cards + release-feed fallback.
+# Anything under `content/releases/` overrides the fallback at build time.
+
+hero:
+  eyebrow_left: Product documentation
+  eyebrow_right: BrightCom Apps for Business Central
+  heading: "Build, ship and scale <em>Business&nbsp;Central</em> integrations with confidence."
+  sub: >
+    Guides, references and release notes for BRC Connect, BRC Core and the full
+    BrightCom app catalog — maintained by the team that ships the code.
+  meta:
+    - label: Latest release
+      value_html: '<span class="accent">BRC Core</span> 27.0.30430'
+    - label: BC platform
+      value_html: 'Dynamics 365 · v25.0 · Cloud'
+    - label: Updated
+      value_html: 'April 2, 2026'
+
+quick_cards:
+  - label: New here
+    title: Install your first app
+    desc: Prerequisites, AppSource install, and a working sync in under 30 minutes.
+    url: /overview/
+  - label: Migrating
+    title: Upgrade from NAV / earlier
+    desc: Migration guides, breaking-change notes and compatibility matrices per release.
+    url: /tutorials/
+  - label: Developers
+    title: Extend & customize
+    desc: Event-driven hooks, field mapping, and the BRC Connect SDK reference.
+    url: /reference/
+  - label: Partners
+    title: Reseller & AppSource
+    desc: Partner onboarding, licensing, and the joint-delivery model for integrations.
+    url: /partner-solutions/
+
+# Shown when there are no pages in /releases yet
+releases_fallback:
+  - date: Apr 2
+    product: BRC Core
+    version: 27.0.30430
+    title: Price Book features & rounding tolerance on bidirectional sync
+    type: Feature
+  - date: Mar 28
+    product: BRC Connect
+    version: 25.0.25051
+    title: 'Generic JSON API improvements: nested key mapping and retry backoff'
+    type: Feature
+  - date: Mar 21
+    product: BRC Logistics
+    version: 25.0.11040
+    title: nShift labels now attach to posted shipments automatically
+    type: Improvement
+  - date: Mar 14
+    product: BRC Pleo Connect
+    version: 25.0.01002
+    title: Initial GA release — card transactions, receipts and journal posting
+    type: Release

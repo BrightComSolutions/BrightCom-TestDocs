@@ -1,0 +1,89 @@
+{{/*
+  BrightCom Docs — left sidebar override.
+  Replaces Docsy's _partials/sidebar.html so we own the whole column.
+  Context: current page (.). .Site, .Params, .Ancestors are all available.
+*/}}
+{{- $page := . -}}
+
+{{/* Resolve the "product" this page belongs to = topmost ancestor under the language root. */}}
+{{- $product := $page -}}
+{{- if $page.IsHome -}}
+  {{- $product = $page -}}
+{{- else -}}
+  {{- range $page.Ancestors.Reverse -}}
+    {{- if not .IsHome -}}
+      {{- $product = . -}}
+      {{- break -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $productName := $product.Title | default $product.LinkTitle | default .Site.Title -}}
+{{- $productMark := upper (substr (replaceRE "[^A-Za-z]" "" $productName) 0 2) -}}
+{{- $productVersion := $product.Params.version -}}
+
+<nav class="td-sidebar-nav bc-sidebar" aria-label="{{ T "ui_docs_nav" | default "Docs navigation" }}">
+  <a class="bc-product-switcher" href="{{ $product.RelPermalink }}" aria-label="{{ T "ui_product_switcher" | default "Switch product" }}">
+    <span class="bc-mark">{{ $productMark | default "BC" }}</span>
+    <span class="bc-meta">
+      <span class="bc-name">{{ $productName }}</span>
+      {{ with $productVersion }}<span class="bc-version">v{{ . }}</span>{{ end }}
+    </span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--muted)">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </a>
+
+  <div class="bc-s-title">{{ T "ui_documentation" | default "Documentation" }}</div>
+  <ul class="bc-tree">
+    {{- $root := cond $product.IsHome .Site.Home $product -}}
+    {{- range (where $root.Pages "Params.toc_hide" "!=" true) -}}
+      {{- template "bc-tree-item" (dict "p" . "ctx" $page "depth" 0) -}}
+    {{- end -}}
+  </ul>
+
+  {{ with .Site.Params.sidebar_related_products }}
+    <div class="bc-s-title">{{ T "ui_related_products" | default "Related products" }}</div>
+    <ul class="bc-flat">
+      {{ range . }}
+        <li><a href="{{ .url | relLangURL }}">{{ .name }}</a></li>
+      {{ end }}
+    </ul>
+  {{ end }}
+
+  {{ with .Site.Params.sidebar_resources }}
+    <div class="bc-s-title">{{ T "ui_resources" | default "Resources" }}</div>
+    <ul class="bc-flat">
+      {{ range . }}
+        <li><a href="{{ .url | relLangURL }}">{{ .name }}</a></li>
+      {{ end }}
+    </ul>
+  {{ end }}
+</nav>
+
+{{- define "bc-tree-item" -}}
+  {{- $p := .p -}}{{- $ctx := .ctx -}}{{- $depth := .depth -}}
+  {{- $children := where $p.Pages "Params.toc_hide" "!=" true -}}
+  {{- $isActive := or (eq $p.RelPermalink $ctx.RelPermalink) ($ctx.IsDescendant $p) -}}
+  {{- $isCurrent := eq $p.RelPermalink $ctx.RelPermalink -}}
+
+  {{- if $children -}}
+    <li class="bc-group{{ if not $isActive }} collapsed{{ end }}" data-bc-group="{{ $p.RelPermalink }}">
+      <div class="bc-group-head">
+        <span class="bc-caret" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+        <a href="{{ $p.RelPermalink }}"{{ if $isCurrent }} class="active" aria-current="page"{{ end }}>{{ $p.LinkTitle }}</a>
+      </div>
+      <ul class="bc-children">
+        {{- range $children -}}
+          {{- template "bc-tree-item" (dict "p" . "ctx" $ctx "depth" (add $depth 1)) -}}
+        {{- end -}}
+      </ul>
+    </li>
+  {{- else -}}
+    <li>
+      <a href="{{ $p.RelPermalink }}"{{ if $isCurrent }} class="active" aria-current="page"{{ end }}>{{ $p.LinkTitle }}</a>
+    </li>
+  {{- end -}}
+{{- end -}}

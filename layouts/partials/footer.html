@@ -1,0 +1,77 @@
+{{/*
+  BrightCom Docs — dark site footer override.
+  4-col grid + bottom legal strip. Links pulled from .Site.Params.footer_cols
+  when set, otherwise static defaults matching the design handoff.
+*/}}
+{{- $cols := .Site.Params.footer_cols -}}
+{{- $copyright := .Site.Params.copyright -}}
+{{- $fromYear := (default 2025 (default (int 0) (index (default (dict "from_year" 2025) $copyright) "from_year"))) -}}
+{{- $authors := (default "BrightCom Solutions" (default "" (index (default (dict "authors" "BrightCom Solutions") $copyright) "authors"))) -}}
+{{- $nowYear := now.Year -}}
+
+<footer class="bc-site-foot">
+  <div class="bc-foot-inner">
+    <div class="bc-foot-brand">
+      <div class="bc-foot-brand-row">
+        <span class="bc-foot-mark" aria-hidden="true">B</span>
+        <span class="bc-foot-title">{{ .Site.Title }}</span>
+      </div>
+      <p>
+        {{- with .Site.Params.footer_tagline -}}
+          {{ . }}
+        {{- else -}}
+          Product documentation for BrightCom's Microsoft Dynamics 365 Business Central apps and integrations.
+        {{- end -}}
+      </p>
+    </div>
+
+    {{ if $cols }}
+      {{ range $cols }}
+        <div class="bc-foot-col">
+          <h5>{{ .title }}</h5>
+          <ul>
+            {{ range .links }}
+              <li><a href="{{ .url | relLangURL }}">{{ .name }}</a></li>
+            {{ end }}
+          </ul>
+        </div>
+      {{ end }}
+    {{ else }}
+      <div class="bc-foot-col">
+        <h5>{{ T "ui_documentation" | default "Documentation" }}</h5>
+        <ul>
+          {{ range .Site.Menus.main }}
+            <li><a href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+      <div class="bc-foot-col">
+        <h5>{{ T "ui_resources" | default "Resources" }}</h5>
+        <ul>
+          {{ range .Site.Params.links.user }}
+            <li><a href="{{ .url }}">{{ .name }}</a></li>
+          {{ end }}
+          {{ range .Site.Params.links.developer }}
+            <li><a href="{{ .url }}">{{ .name }}</a></li>
+          {{ end }}
+        </ul>
+      </div>
+      <div class="bc-foot-col">
+        <h5>{{ T "ui_contact" | default "Contact" }}</h5>
+        <ul>
+          <li><a href="mailto:info@brightcom.se">info@brightcom.se</a></li>
+          <li><a href="https://www.brightcom.se">brightcom.se &rarr;</a></li>
+        </ul>
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="bc-foot-bottom">
+    <span>&copy; {{ $fromYear }}&ndash;{{ $nowYear }} {{ $authors }}</span>
+    <span>
+      {{ with .Site.Params.privacy_policy }}<a href="{{ . }}">{{ T "ui_privacy" | default "Privacy" }}</a> &middot; {{ end }}
+      <a href="#">{{ T "ui_cookies" | default "Cookies" }}</a> &middot;
+      <a href="#">{{ T "ui_terms" | default "Terms" }}</a>
+    </span>
+  </div>
+</footer>

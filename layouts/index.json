@@ -1,0 +1,20 @@
+{{/*
+  BrightCom Docs — offline search index.
+  Consumed by bc-docs.js via fetch('/offline-search-index.json').
+*/}}
+{{- $pages := slice -}}
+{{- range where .Site.RegularPages "Params.toc_hide" "!=" true -}}
+  {{- $content := .Plain | plainify -}}
+  {{- $content = replaceRE "\\s+" " " $content -}}
+  {{- $excerpt := substr $content 0 280 -}}
+  {{- $pages = $pages | append (dict
+    "title" .Title
+    "description" (.Description | default $excerpt)
+    "content" $excerpt
+    "ref" .RelPermalink
+    "url" .RelPermalink
+    "breadcrumb" (trim .RelPermalink "/")
+    "section" .Section
+  ) -}}
+{{- end -}}
+{{- $pages | jsonify -}}

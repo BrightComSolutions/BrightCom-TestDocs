@@ -1,0 +1,129 @@
+{{ define "main" }}
+{{- $home := .Site.Data.home -}}
+{{- $products := .Site.Data.products -}}
+{{- $hero := $home.hero -}}
+
+<section class="bc-hero">
+  <div class="bc-hero-inner">
+    <div>
+      <div class="bc-hero-eyebrow">
+        <span>{{ $hero.eyebrow_left }}</span>
+        <span class="bc-hero-dot"></span>
+        <span>{{ $hero.eyebrow_right }}</span>
+      </div>
+      <h1>{{ $hero.heading | safeHTML }}</h1>
+      <p class="bc-hero-sub">{{ $hero.sub }}</p>
+      <button type="button" class="bc-hero-search" data-bc-search-open>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+        </svg>
+        <span>{{ T "ui_search_everything" | default "Search across every product and release…" }}</span>
+        <span class="bc-kbd">⌘K</span>
+      </button>
+    </div>
+    <div class="bc-hero-meta">
+      {{ range $hero.meta }}
+        <div class="bc-meta-item">
+          <span class="bc-meta-label">{{ .label }}</span>
+          <span class="bc-meta-val">{{ .value_html | safeHTML }}</span>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="bc-home-section">
+  <div class="bc-section-head">
+    <div>
+      <div class="bc-eyebrow">{{ T "ui_get_started" | default "Get started" }}</div>
+      <h2>{{ T "ui_pick_where" | default "Pick where you are" }}</h2>
+    </div>
+  </div>
+  <div class="bc-quick">
+    {{ range $home.quick_cards }}
+      <a class="bc-qc" href="{{ .url | relLangURL }}">
+        <div class="bc-qc-label">{{ .label }}</div>
+        <h4>{{ .title }}</h4>
+        <p>{{ .desc }}</p>
+      </a>
+    {{ end }}
+  </div>
+</section>
+
+<section class="bc-home-section">
+  <div class="bc-section-head">
+    <div>
+      <div class="bc-eyebrow">{{ T "ui_brightcom_apps" | default "BrightCom Apps" }}</div>
+      <h2>{{ T "ui_every_product" | default "Every product, one place" }}</h2>
+    </div>
+    <div class="bc-h-side">
+      {{ len $products }} apps &middot; updated weekly &middot;
+      <a href="{{ "releases/" | relLangURL }}">{{ T "ui_full_release_log" | default "Full release log" }} &rarr;</a>
+    </div>
+  </div>
+  <div class="bc-product-grid">
+    {{ range $products }}
+      <a class="bc-product-card" href="{{ .url | relLangURL }}">
+        <div class="bc-pc-mark{{ if .accent }} accent{{ end }}">{{ .mark }}</div>
+        <h3>{{ .name }}</h3>
+        <p class="bc-pc-desc">{{ .desc }}</p>
+        <div class="bc-pc-meta">
+          <span>{{ .tag }}</span>
+          <span class="dot"></span>
+          <span>{{ .version }}</span>
+          {{ if .isNew }}<span class="dot"></span><span class="new">NEW</span>{{ end }}
+          {{ if eq .status "Preview" }}<span class="dot"></span><span class="new">PREVIEW</span>{{ end }}
+        </div>
+        <div class="bc-pc-arrow" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+          </svg>
+        </div>
+      </a>
+    {{ end }}
+  </div>
+</section>
+
+<section class="bc-home-section" style="padding-bottom: 64px;">
+  <div class="bc-section-head">
+    <div>
+      <div class="bc-eyebrow">{{ T "ui_shipped_recently" | default "Shipped recently" }}</div>
+      <h2>{{ T "ui_what_changed" | default "What changed" }}</h2>
+    </div>
+    <div class="bc-h-side"><a href="{{ "releases/" | relLangURL }}">{{ T "ui_all_release_notes" | default "All release notes" }} &rarr;</a></div>
+  </div>
+
+  {{- $releasesSection := .Site.GetPage "section" "releases" -}}
+  {{- $releasePages := slice -}}
+  {{- with $releasesSection -}}{{- $releasePages = first 4 (.Pages.ByDate.Reverse) -}}{{- end -}}
+
+  <div class="bc-release-feed">
+    {{ if $releasePages }}
+      {{ range $releasePages }}
+        <a class="bc-rel-row" href="{{ .RelPermalink }}">
+          <div class="bc-rel-date">{{ .Date.Format "Jan 2" }}</div>
+          <div>
+            <div class="bc-rel-product">{{ .Params.product | default .Section | humanize }}</div>
+            <div class="bc-rel-ver">{{ .Params.version | default "" }}</div>
+          </div>
+          <div class="bc-rel-title">{{ .Title }}</div>
+          <div><span class="bc-pill">{{ .Params.type | default "Release" }}</span></div>
+        </a>
+      {{ end }}
+    {{ else }}
+      {{ range $home.releases_fallback }}
+        <div class="bc-rel-row">
+          <div class="bc-rel-date">{{ .date }}</div>
+          <div>
+            <div class="bc-rel-product">{{ .product }}</div>
+            <div class="bc-rel-ver">{{ .version }}</div>
+          </div>
+          <div class="bc-rel-title">{{ .title }}</div>
+          <div><span class="bc-pill">{{ .type }}</span></div>
+        </div>
+      {{ end }}
+    {{ end }}
+  </div>
+</section>
+
+{{ end }}

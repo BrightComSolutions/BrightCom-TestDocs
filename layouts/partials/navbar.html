@@ -1,0 +1,53 @@
+{{/*
+  BrightCom Docs — top bar override
+  Matches the dark navbar in design_handoff_brightcom_docs/BrightCom Docs.html.
+  Keeps the .td-navbar class so Docsy's built-in sidebar-toggle JS still attaches.
+*/}}
+{{ $currentPage := . }}
+<header class="td-navbar bc-topbar">
+  <a class="bc-brand" href="{{ "" | relLangURL }}">
+    <span class="bc-brand-mark" aria-hidden="true">B</span>
+    <span class="bc-brand-name">{{ .Site.Title }}</span>
+    <span class="bc-brand-docs">/ {{ T "ui_docs" | default "Docs" }}</span>
+  </a>
+
+  <nav class="bc-nav" aria-label="{{ T "ui_primary_nav" | default "Primary" }}">
+    {{ range .Site.Menus.main }}
+      {{ $active := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }}
+      <a href="{{ .URL | relLangURL }}"{{ if $active }} class="active" aria-current="page"{{ end }}>
+        {{ .Pre }}{{ .Name }}{{ .Post }}
+      </a>
+    {{ end }}
+  </nav>
+
+  <div class="bc-grow"></div>
+
+  <button type="button" class="bc-search-trigger" data-bc-search-open aria-label="{{ T "ui_search_docs" | default "Search docs" }}">
+    <svg class="bc-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>
+    </svg>
+    <span>{{ T "ui_search_docs" | default "Search docs…" }}</span>
+    <span class="bc-kbd">⌘K</span>
+  </button>
+
+  {{ if gt (len .Site.Languages) 1 }}
+    <div class="bc-lang" tabindex="0" aria-label="{{ T "ui_language" | default "Language" }}">
+      {{ upper (substr .Site.Language.Lang 0 2) }}
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+  {{ end }}
+
+  <button type="button" class="bc-theme-toggle" data-bc-theme-toggle aria-label="{{ T "ui_toggle_theme" | default "Toggle theme" }}">
+    <svg class="bc-ico-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+    </svg>
+    <svg class="bc-ico-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </button>
+</header>
+
+{{ partial "bc-search-overlay.html" . }}

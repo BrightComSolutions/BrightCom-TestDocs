@@ -1,0 +1,76 @@
+# Home-page product grid. Swap marks / names / descriptions here; the
+# layout/index.html template iterates this list.
+- id: brc-connect
+  mark: BC
+  name: BRC Connect
+  desc: Integration platform connecting Business Central to e-commerce and POS systems.
+  tag: Integration
+  version: v25.0
+  status: Stable
+  url: /brc-connect/
+- id: brc-core
+  mark: CO
+  name: BRC Core
+  desc: Standard add-ons and utilities that extend Business Central's baseline behavior.
+  tag: Foundation
+  version: v27.0
+  status: Stable
+  accent: true
+  url: /brc-core/
+- id: brc-retail
+  mark: RE
+  name: BRC Retail Extension
+  desc: Variant management, matrix entry, and retail-specific workflows for fashion & lifestyle.
+  tag: Retail
+  version: v25.0
+  status: Stable
+  url: /brc-retail/
+- id: brc-logistics
+  mark: LO
+  name: BRC Logistics Connector
+  desc: Bridge WMS, 3PL and carrier systems — OnGoing, Bitlog, LogTrade, nShift.
+  tag: Logistics
+  version: v25.0
+  status: Stable
+  url: /brc-logistics/
+- id: postnord-freight
+  mark: PN
+  name: PostNord Connect
+  desc: Shipping labels, tracking and pickup-point lookup via PostNord APIs.
+  tag: Shipping
+  version: v24.0
+  status: Stable
+  url: /postnord-freight-integration/
+- id: brc-pleo
+  mark: PL
+  name: BRC Pleo Connect
+  desc: Sync Pleo card transactions and receipts into Business Central expense journals.
+  tag: Finance
+  version: v25.0
+  status: Stable
+  isNew: true
+  url: /brc-pleo/
+- id: brc-efm
+  mark: FM
+  name: Extended Finance Mgmt
+  desc: Contract billing, deferred revenue, and recurring invoice schedules.
+  tag: Finance
+  version: v25.0
+  status: Stable
+  url: /brc-extended-finance-management/
+- id: brc-eom
+  mark: OM
+  name: Extended Order Mgmt
+  desc: Advanced order allocation, partial fulfillment, and backorder handling.
+  tag: Orders
+  version: v25.0
+  status: Stable
+  url: /brc-extended-order-management/
+- id: madden
+  mark: MA
+  name: Madden Analytics Connect
+  desc: Stream BC transactional data into Madden Analytics for BI reporting.
+  tag: Analytics
+  version: v25.0
+  status: Preview
+  url: /madden-analytics-connect/
