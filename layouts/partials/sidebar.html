@@ -51,6 +51,19 @@
     </ul>
   {{ end }}
 
+  {{/* Per-product release notes link — only rendered if
+       /releases/<product-slug>/ exists. Matches folder reshuffle from
+       the "Option B" release-notes restructure. */}}
+  {{- $productSlug := path.Base $product.RelPermalink -}}
+  {{- $productReleases := .Site.GetPage (printf "/releases/%s" $productSlug) -}}
+  {{ with $productReleases }}
+    {{- $count := len .RegularPagesRecursive -}}
+    <div class="bc-s-title">{{ T "ui_release_notes" | default "Release notes" }}</div>
+    <ul class="bc-flat">
+      <li><a href="{{ .RelPermalink }}">{{ T "ui_all_releases" | default "All releases" }}{{ if $count }} <span class="bc-nav-count">{{ $count }}</span>{{ end }}</a></li>
+    </ul>
+  {{ end }}
+
   {{ with .Site.Params.sidebar_resources }}
     <div class="bc-s-title">{{ T "ui_resources" | default "Resources" }}</div>
     <ul class="bc-flat">
