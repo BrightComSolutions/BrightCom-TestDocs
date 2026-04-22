@@ -1076,6 +1076,22 @@ h1, h2, h3, h4, h5, h6,
 }
 [data-theme="dark"] .bc-product-grid .bc-pc-meta .new { color: var(--accent); }
 
+/* ---------------------------------------------------------------
+   Release-list pages — Docsy renders these single-column (no sidebar,
+   no TOC), so the td-content 760px cap leaves everything crammed at
+   the top-left. Override to a wider centered layout.
+   ---------------------------------------------------------------- */
+.bc-release-list {
+  max-width: 1100px !important;
+  margin: 0 auto;
+  padding: 28px 48px 120px;
+}
+@media (max-width: 767.98px) {
+  .bc-release-list {
+    padding: 20px 20px 80px;
+  }
+}
+
 /* Release feed */
 .bc-release-feed {
   border: 1px solid var(--rule);
@@ -1085,7 +1101,7 @@ h1, h2, h3, h4, h5, h6,
 
   .bc-rel-row {
     display: grid;
-    grid-template-columns: 80px 140px 1fr 100px;
+    grid-template-columns: 80px 160px 1fr 100px;
     gap: 20px;
     padding: 18px 24px;
     border-top: 1px solid var(--rule);
@@ -1106,6 +1122,14 @@ h1, h2, h3, h4, h5, h6,
       grid-template-columns: 1fr;
       gap: 4px;
     }
+  }
+}
+
+// Release-list pages get the TOC hidden and wider content, so the feed
+// can afford a bigger date column ("Jan 2, 2006" needs ~100px).
+.bc-release-list .bc-release-feed .bc-rel-row {
+  @media (min-width: 768px) {
+    grid-template-columns: 110px 200px 1fr 100px;
   }
 }
 
