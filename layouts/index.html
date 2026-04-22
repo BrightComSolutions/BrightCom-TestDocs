@@ -23,10 +23,15 @@
     </div>
     <div class="bc-hero-meta">
       {{- /* Derive "Latest release" + "Updated" from the newest /releases/ page.
+             Uses RegularPagesRecursive so per-product subfolders are walked.
              Falls back to data/home.yaml meta[] when that section is empty. */ -}}
       {{- $releasesSection := .Site.GetPage "section" "releases" -}}
       {{- $latest := "" -}}
-      {{- with $releasesSection -}}{{- $latest = index (.Pages.ByDate.Reverse) 0 -}}{{- end -}}
+      {{- with $releasesSection -}}
+        {{- with (.RegularPagesRecursive.ByDate.Reverse) -}}
+          {{- $latest = index . 0 -}}
+        {{- end -}}
+      {{- end -}}
 
       {{ if $latest }}
         {{- /* Title is "<Product> <version>" e.g. "BRC Core 27.0.30430.0".
@@ -132,7 +137,7 @@
 
   {{- $releasesSection := .Site.GetPage "section" "releases" -}}
   {{- $releasePages := slice -}}
-  {{- with $releasesSection -}}{{- $releasePages = first 4 (.Pages.ByDate.Reverse) -}}{{- end -}}
+  {{- with $releasesSection -}}{{- $releasePages = first 4 (.RegularPagesRecursive.ByDate.Reverse) -}}{{- end -}}
 
   <div class="bc-release-feed">
     {{ if $releasePages }}
