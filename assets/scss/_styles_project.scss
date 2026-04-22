@@ -1002,6 +1002,13 @@ h1, h2, h3, h4, h5, h6,
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  margin: 20px 0;
+
+  // --auto: fluid grid for the /apps/ catalog where panes may have 1-5 cards.
+  // Fills the row with min 300px cards and never leaves big empty cells.
+  &.bc-product-grid--auto {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
 
   @media (max-width: 991.98px) { grid-template-columns: repeat(2, 1fr); }
   @media (max-width: 575.98px) { grid-template-columns: 1fr; }
@@ -1090,6 +1097,26 @@ h1, h2, h3, h4, h5, h6,
   .bc-release-list {
     padding: 20px 20px 80px;
   }
+}
+
+/* /apps/ catalog — single-column Docsy baseof, no sidebar; center wide. */
+.bc-apps-list {
+  max-width: 1200px !important;
+  margin: 0 auto;
+  padding: 28px 48px 120px;
+
+  h2 {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  h2:first-of-type { border-top: 0; padding-top: 4px; margin-top: 0; }
+  h3 { margin-top: 36px; }
+
+  > hr { display: none; } // we use h2 border-top as the divider
+}
+@media (max-width: 767.98px) {
+  .bc-apps-list { padding: 20px 20px 80px; }
 }
 
 /* Release feed */

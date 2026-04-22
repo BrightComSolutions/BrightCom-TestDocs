@@ -1,0 +1,68 @@
+{{/*
+  BrightCom Docs — card shortcode override.
+  Emits a bc-product-card matching the home grid aesthetic.
+
+  Named params (backward-compat with Docsy's card):
+    header = product name (markdown bold like "**BRC Connect**" OK)
+    title  = category / secondary label
+    mark   = optional 2-letter override (e.g. "BC"); derived if omitted
+    url    = optional explicit link; otherwise the first href in inner content wins
+
+  The trailing "<br><br><a ...>Learn More</a>" pattern is stripped from
+  the rendered description since the whole card becomes the link.
+*/}}
+{{- $inner := trim .Inner " \n\r\t" -}}
+{{- $header := .Get "header" | default "" -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $markParam := .Get "mark" | default "" -}}
+{{- $urlParam := .Get "url" | default "" -}}
+
+{{- /* Strip markdown emphasis from header */ -}}
+{{- $name := replaceRE `\*\*|__|\*|_` "" $header -}}
+{{- $name = trim $name " " -}}
+
+{{- /* Resolve URL: explicit param beats first <a href> in inner */ -}}
+{{- $url := $urlParam -}}
+{{- if eq $url "" -}}
+  {{- $hrefMatches := findRESubmatch `href=["']([^"']+)["']` $inner -}}
+  {{- if $hrefMatches -}}
+    {{- $url = index (index $hrefMatches 0) 1 -}}
+  {{- end -}}
+{{- end -}}
+{{- if eq $url "" -}}{{- $url = "#" -}}{{- end -}}
+
+{{- /* Derive the 2-letter mark if not passed in. Strip a leading "BRC "
+       (or "BRC") then take the first two letters of the remainder. */ -}}
+{{- $mark := $markParam -}}
+{{- if eq $mark "" -}}
+  {{- $plain := $name -}}
+  {{- $plain = replaceRE `^(?i)BRC\s+` "" $plain -}}
+  {{- $plain = replaceRE `[^A-Za-z]` "" $plain -}}
+  {{- if ge (len $plain) 2 -}}
+    {{- $mark = upper (substr $plain 0 2) -}}
+  {{- else -}}
+    {{- $mark = upper (substr (replaceRE `[^A-Za-z]` "" $name) 0 2) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Strip the trailing "<br><br><a ...>Learn More</a>" junk for a
+       clean description — the card itself becomes the link. */ -}}
+{{- $desc := $inner -}}
+{{- $desc = replaceRE `(?is)\s*(<br\s*/?>[\s\n]*)*\s*<a[^>]*>[^<]*</a>\s*$` "" $desc -}}
+{{- $desc = trim $desc " \n\r\t" -}}
+
+<a class="bc-product-card" href="{{ $url | relURL }}">
+  <div class="bc-pc-mark">{{ $mark }}</div>
+  <h3>{{ $name }}</h3>
+  <p class="bc-pc-desc">{{ $desc | safeHTML }}</p>
+  {{ with $title }}
+    <div class="bc-pc-meta">
+      <span>{{ . }}</span>
+    </div>
+  {{ end }}
+  <div class="bc-pc-arrow" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline>
+    </svg>
+  </div>
+</a>
