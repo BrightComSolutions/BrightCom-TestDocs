@@ -1,0 +1,59 @@
+{{/*
+  BrightCom Docs — /releases/<product-slug>/ list page.
+  Fires for subsections whose type defaults to "releases" (first-segment).
+  The root /releases/ _index.md declares `type: docs` so it's unaffected.
+*/}}
+{{ define "main" }}
+<article class="bc-article td-content">
+  <nav aria-label="breadcrumb" class="td-breadcrumbs">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ "" | relLangURL }}">{{ T "ui_home" | default "Docs" }}</a></li>
+      {{ with .Parent }}
+        <li class="breadcrumb-item"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{ end }}
+      <li class="breadcrumb-item active" aria-current="page">{{ .LinkTitle | default .Title }}</li>
+    </ol>
+  </nav>
+
+  <h1>{{ .Title }}</h1>
+  {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+
+  {{ with .Content }}{{ . }}{{ end }}
+
+  {{- $releases := .RegularPagesRecursive.ByDate.Reverse -}}
+  {{ if $releases }}
+    <div class="bc-section-head" style="margin-top:40px;">
+      <div>
+        <div class="bc-eyebrow">{{ T "ui_release_history" | default "Release history" }}</div>
+        <h2 style="margin:4px 0 0;font-size:22px;">{{ len $releases }} {{ cond (eq (len $releases) 1) (T "ui_release" | default "release") (T "ui_releases" | default "releases") }}</h2>
+      </div>
+    </div>
+    <div class="bc-release-feed">
+      {{ range $releases }}
+        {{- $fullTitle := .Title -}}
+        {{- $prod := $fullTitle -}}
+        {{- $ver := "" -}}
+        {{- $match := findRE "\\s\\d[\\d\\.]+$" $fullTitle -}}
+        {{- if $match -}}
+          {{- $suffix := index $match 0 -}}
+          {{- $ver = strings.TrimLeft " " $suffix -}}
+          {{- $prod = strings.TrimSuffix $suffix $fullTitle -}}
+        {{- end -}}
+        {{- $rowTitle := .Description -}}
+        {{- if not $rowTitle -}}{{- $rowTitle = $prod -}}{{- end -}}
+        <a class="bc-rel-row" href="{{ .RelPermalink }}">
+          <div class="bc-rel-date">{{ .Date.Format "Jan 2, 2006" }}</div>
+          <div>
+            <div class="bc-rel-product">{{ $prod }}</div>
+            <div class="bc-rel-ver">{{ $ver }}</div>
+          </div>
+          <div class="bc-rel-title">{{ $rowTitle }}</div>
+          <div><span class="bc-pill">{{ .Params.type | default "Release" }}</span></div>
+        </a>
+      {{ end }}
+    </div>
+  {{ else }}
+    <p>{{ T "ui_no_releases" | default "No release notes published yet." }}</p>
+  {{ end }}
+</article>
+{{ end }}
