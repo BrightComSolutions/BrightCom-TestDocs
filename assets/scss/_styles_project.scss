@@ -1099,6 +1099,95 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
+/* Release-note detail page */
+.bc-release-single {
+  max-width: 900px !important;
+  margin: 0 auto;
+  padding: 28px 48px 80px;
+}
+@media (max-width: 767.98px) {
+  .bc-release-single { padding: 20px 20px 60px; }
+}
+
+.bc-release-header {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 24px 0 28px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--rule);
+
+  &__mark {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+  }
+  &__body { min-width: 0; }
+  &__product {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  h1 {
+    margin: 0 0 10px;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  &__ver {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: 0;
+    color: var(--ink);
+  }
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  &__date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+  }
+  &__tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    font-size: 11.5px;
+    color: var(--muted);
+    background: var(--white);
+  }
+  &__desc {
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0;
+  }
+}
+
 /* /apps/ catalog — single-column Docsy baseof, no sidebar; center wide. */
 .bc-apps-list {
   max-width: 1200px !important;

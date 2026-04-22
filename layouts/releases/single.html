@@ -1,0 +1,113 @@
+{{/*
+  BrightCom Docs — release note detail page.
+  Fires for any page with type "releases" (the default for /releases/*).
+
+  Expected front-matter (what agents should emit):
+    title:       "<Product> <version>"      e.g. "BRC Core 27.0.30430.0"
+    date:        2026-04-02
+    description: "<one-line summary>"        shown in feed AND detail header
+    categories:  [<Product>, ReleaseNotes]   used for cross-linking
+
+  Everything below is derived — no content changes needed to release
+  note markdown. Body keeps the standard 4-section template.
+*/}}
+{{ define "main" }}
+{{- $fullTitle := .Title -}}
+{{- $prod := $fullTitle -}}
+{{- $ver := "" -}}
+{{- $match := findRE "\\s\\d[\\d\\.]+$" $fullTitle -}}
+{{- if $match -}}
+  {{- $suffix := index $match 0 -}}
+  {{- $ver = strings.TrimLeft " " $suffix -}}
+  {{- $prod = strings.TrimSuffix $suffix $fullTitle -}}
+{{- end -}}
+
+{{- /* Product-specific prev/next. The release notes live under
+       /releases/<product-slug>/, so we pager within that parent. */ -}}
+{{- $productSection := .Parent -}}
+{{- $productReleases := (where $productSection.RegularPagesRecursive "Date" "!=" nil).ByDate -}}
+{{- $idx := -1 -}}
+{{- range $i, $p := $productReleases -}}
+  {{- if eq $p.RelPermalink $.RelPermalink -}}{{- $idx = $i -}}{{- end -}}
+{{- end -}}
+{{- $prev := "" -}}{{- $next := "" -}}
+{{- if gt $idx 0 -}}{{- $prev = index $productReleases (sub $idx 1) -}}{{- end -}}
+{{- if and (ge $idx 0) (lt $idx (sub (len $productReleases) 1)) -}}{{- $next = index $productReleases (add $idx 1) -}}{{- end -}}
+
+{{- /* Mark letters for the product header badge */ -}}
+{{- $plain := replaceRE `^(?i)BRC\s+` "" $prod -}}
+{{- $plain = replaceRE `[^A-Za-z]` "" $plain -}}
+{{- $mark := "" -}}
+{{- if ge (len $plain) 2 -}}
+  {{- $mark = upper (substr $plain 0 2) -}}
+{{- else -}}
+  {{- $mark = upper (substr (replaceRE `[^A-Za-z]` "" $prod) 0 2) -}}
+{{- end -}}
+
+<article class="bc-article bc-release-single td-content">
+
+  <nav aria-label="breadcrumb" class="td-breadcrumbs">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ "" | relLangURL }}">{{ T "ui_home" | default "Docs" }}</a></li>
+      <li class="breadcrumb-item"><a href="{{ "/releases/" | relLangURL }}">{{ T "ui_release_log" | default "Release Log" }}</a></li>
+      {{ with $productSection }}
+        <li class="breadcrumb-item"><a href="{{ .RelPermalink }}">{{ .Title | default $prod }}</a></li>
+      {{ end }}
+      <li class="breadcrumb-item active" aria-current="page">{{ $ver | default $fullTitle }}</li>
+    </ol>
+  </nav>
+
+  <header class="bc-release-header">
+    <div class="bc-release-header__mark">{{ $mark }}</div>
+    <div class="bc-release-header__body">
+      <div class="bc-release-header__product">{{ $prod }}</div>
+      <h1>
+        <span class="bc-release-header__ver">{{ $ver | default $fullTitle }}</span>
+      </h1>
+      <div class="bc-release-header__meta">
+        <span class="bc-pill stable">{{ T "ui_release" | default "Release" }}</span>
+        <span class="bc-release-header__date">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          {{ .Date.Format "January 2, 2006" }}
+        </span>
+        {{ with .Params.categories }}
+          {{- $tags := . -}}
+          {{- range $t := $tags -}}
+            {{- if ne $t "ReleaseNotes" -}}
+              <span class="bc-release-header__tag">{{ $t }}</span>
+            {{- end -}}
+          {{- end -}}
+        {{ end }}
+      </div>
+      {{ with .Description }}<p class="bc-release-header__desc">{{ . }}</p>{{ end }}
+    </div>
+  </header>
+
+  {{ .Content }}
+
+  {{ if or $prev $next }}
+    <div class="bc-article-footer">
+      <nav class="bc-pager" aria-label="{{ T "ui_adjacent_releases" | default "Adjacent releases" }}">
+        {{ if $prev }}
+          <a href="{{ $prev.RelPermalink }}" class="prev">
+            <span class="p-label">&larr; {{ T "ui_previous_release" | default "Previous release" }}</span>
+            <span class="p-title">{{ $prev.Title }}</span>
+          </a>
+        {{ else }}<span></span>{{ end }}
+        {{ if $next }}
+          <a href="{{ $next.RelPermalink }}" class="next">
+            <span class="p-label">{{ T "ui_next_release" | default "Next release" }} &rarr;</span>
+            <span class="p-title">{{ $next.Title }}</span>
+          </a>
+        {{ else }}<span></span>{{ end }}
+      </nav>
+    </div>
+  {{ end }}
+
+</article>
+{{ end }}
